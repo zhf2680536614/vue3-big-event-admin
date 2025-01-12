@@ -5,6 +5,7 @@ defineProps({
     required: true
   }
 })
+console.log('app')
 </script>
 
 <template>
