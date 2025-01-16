@@ -14,8 +14,8 @@ const router = createRouter({
           component: () => import('@/views/article/ArticleManage.vue')
         },
         {
-          path: 'article/channer',
-          component: () => import('@/views/article/ArticleChanner.vue')
+          path: '/article/channel',
+          component: () => import('@/views/article/ArticleChannel.vue')
         },
         {
           path: 'user/profile',
@@ -32,6 +32,19 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+import { useUserStore } from '@/store'
+import { ElMessage } from 'element-plus'
+// 配置前置路由守卫
+router.beforeEach((to, from) => {
+  const userStore = useUserStore()
+  if (!userStore.token && to.path !== '/login') {
+    ElMessage.error('您还未登录，请先登录！')
+    return '/login'
+  }
+  console.log(from)
+  return true
 })
 
 export default router
