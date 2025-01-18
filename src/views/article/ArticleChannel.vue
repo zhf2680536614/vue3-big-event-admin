@@ -1,10 +1,15 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { articleGetChannelsService } from '@/api/article'
+import {
+  articleGetChannelsService,
+  articleDelChannelsService
+} from '@/api/article'
 import { Edit, Delete } from '@element-plus/icons-vue'
+import ChannelEdit from './cpns/ChannelEdit.vue'
 
 const loading = ref(false)
 const articleChannelList = ref([])
+const dialog = ref()
 
 const getArticleChannelList = async () => {
   loading.value = true
@@ -18,18 +23,34 @@ onMounted(() => {
   getArticleChannelList()
 })
 
-const onEditChannel = (row, $index) => {
-  console.log(row, $index)
+const onAddChannel = () => {
+  dialog.value.open({})
 }
 
-const onDelChannel = (row, $index) => {
-  console.log(row, $index)
+const onEditChannel = (row, $index) => {
+  dialog.value.open(row)
+  console.log($index)
+}
+
+const onDelChannel = async (row) => {
+  await ElMessageBox.confirm('你确认要删除吗', '温馨提示', {
+    type: 'warning',
+    ConfirmButtonText: '确认',
+    cancelButtonText: '取消'
+  })
+  await articleDelChannelsService(row.id)
+  getArticleChannelList()
+  ElMessage.success('删除成功')
+}
+
+const onSuccess = () => {
+  getArticleChannelList()
 }
 </script>
 <template>
   <page-container title="文章分类">
     <template #extra>
-      <el-button type="primary">添加分类</el-button>
+      <el-button type="primary" @click="onAddChannel">添加分类</el-button>
     </template>
     <template #main>
       <el-table
@@ -67,4 +88,6 @@ const onDelChannel = (row, $index) => {
       </el-table>
     </template>
   </page-container>
+
+  <channel-edit @success="onSuccess" ref="dialog"></channel-edit>
 </template>
