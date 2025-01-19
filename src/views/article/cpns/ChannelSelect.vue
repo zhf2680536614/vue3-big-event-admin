@@ -14,6 +14,9 @@ defineProps({
   modelValue: {
     required: true,
     type: [Number, String]
+  },
+  width: {
+    type: String
   }
 })
 
@@ -22,7 +25,7 @@ const emit = defineEmits(['update:modelValue'])
 
 <template>
   <el-select
-    style="width: 10vw"
+    :style="{ width }"
     placeholder="请选择"
     :modelValue="modelValue"
     @update:modelValue="emit('update:modelValue', $event)"
@@ -34,5 +37,4 @@ const emit = defineEmits(['update:modelValue'])
       :value="item.id"
     ></el-option>
   </el-select>
-  <div>{{ modelValue }}</div>
 </template>
