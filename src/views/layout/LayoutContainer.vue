@@ -16,7 +16,7 @@ import { useRouter } from 'vue-router'
 const userStore = useUserStore()
 
 onMounted(async () => {
-  await userStore.getUserInfo()
+  await userStore.getuser()
 })
 const router = useRouter()
 const onCommand = async (key) => {
@@ -92,12 +92,12 @@ const onCommand = async (key) => {
       <el-header>
         <div>
           黑马程序员：<strong>{{
-            userStore.userinfo.nickname || userStore.userinfo.username
+            userStore.user.nickname || userStore.user.username
           }}</strong>
         </div>
         <el-dropdown placement="bottom-end" @command="onCommand">
           <span class="el-dropdown__box">
-            <el-avatar :src="userStore.userinfo.user_pic || avatar" />
+            <el-avatar :src="userStore.user.user_pic || avatar" />
             <el-icon>
               <CaretBottom />
             </el-icon>
